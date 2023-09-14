@@ -104,12 +104,20 @@ async function greetUser(salutation, name, botName) {
     }
 }
 
-function retrieveName(answerName) {
-    return "John";
+function retrieveName(sentence) {
+    let docx = nlp(sentence);
+    let people = docx.match("#Person").json();
+
+    if (people.length > 0) {
+        return people[0].text;
+    } else {
+        return "";
+    }
 }
 
 function isAnswerYes(answer) {
-    return true;
+    let docx = nlp(answer);
+    return docx.has("(yes|sure|affirmative|correct|definitely|obviously|true)");
 }
 
 async function enrollFace(botName) {
